@@ -6,10 +6,9 @@ import com.modul2.bookstore.mapper.UserMapper;
 import com.modul2.bookstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("appUsers")
@@ -23,5 +22,30 @@ public class UserController {
         User userToCreate = UserMapper.userDTO2User(userDTO);
         User createdUser = userService.create(userToCreate);
         return ResponseEntity.ok(UserMapper.user2UserDTO(createdUser));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getById(@PathVariable(name = "userId") Long userIdToSearchFor) {
+        User foundUser = userService.getById(userIdToSearchFor);
+        return ResponseEntity.ok(UserMapper.user2UserDTO(foundUser));
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> findAll() {
+        List<User> users = userService.findAll();
+        return ResponseEntity.ok(users.stream().map(UserMapper::user2UserDTO).toList());
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteById(@PathVariable(name = "userId") Long userIdToDelete) {
+        userService.deleteById(userIdToDelete);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateById(@PathVariable(name = "userId") Long userIdToUpdate, @RequestBody UserDTO userBody) {
+        User userEntity = UserMapper.userDTO2User(userBody);
+        User updatedUser = userService.updateById(userIdToUpdate, userEntity);
+        return ResponseEntity.ok(UserMapper.user2UserDTO(updatedUser));
     }
 }
