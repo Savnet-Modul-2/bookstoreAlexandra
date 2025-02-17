@@ -3,7 +3,9 @@ package com.modul2.bookstore.controller;
 import com.modul2.bookstore.dto.UserDTO;
 import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.mapper.UserMapper;
+import com.modul2.bookstore.repository.UserRepository;
 import com.modul2.bookstore.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody UserDTO userDTO) {
@@ -47,5 +52,11 @@ public class UserController {
         User userEntity = UserMapper.userDTO2User(userBody);
         User updatedUser = userService.updateById(userIdToUpdate, userEntity);
         return ResponseEntity.ok(UserMapper.user2UserDTO(updatedUser));
+    }
+
+    @PutMapping("/verify")
+    public ResponseEntity<?> verifyCode(@RequestParam("userId") Long userId, @RequestParam("code") String code) {
+        User verifiedUser = userService.verifyCode(userId, code);
+        return ResponseEntity.ok(UserMapper.user2UserDTO(verifiedUser));
     }
 }

@@ -2,6 +2,8 @@ package com.modul2.bookstore.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "user")
 @Table(name = "USER", schema = "public")
 public class User {
@@ -33,6 +35,15 @@ public class User {
 
     @Column(name = "COUNTRY")
     private String country;
+
+    @Column(name = "VERIFIED_ACCOUNT")
+    private Boolean verifiedAccount = false;
+
+    @Column(name = "VERIFICATION_CODE")
+    private String verificationCode;
+
+    @Column(name = "VERIFICATION_CODE_TIME_EXPIRATION")
+    private LocalDateTime verificationCodeTimeExpiration;
 
     public Long getId() {
         return id;
@@ -104,5 +115,29 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Boolean getVerifiedAccount() {
+        return verifiedAccount;
+    }
+
+    public void setVerifiedAccount(Boolean verifiedAccount) {
+        this.verifiedAccount = verifiedAccount;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getVerificationCodeTimeExpiration() {
+        return verificationCodeTimeExpiration;
+    }
+
+    public void setVerificationCodeTimeExpiration(LocalDateTime verificationCodeTimeExpiration) {
+        this.verificationCodeTimeExpiration = verificationCodeTimeExpiration;
     }
 }

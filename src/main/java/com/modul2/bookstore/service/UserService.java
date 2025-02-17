@@ -7,23 +7,45 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     public User create(User user) {
+        if(user.getId() != null) {
+            throw new RuntimeException("You cannot provide an ID to a new user that you want to create");
+        }
+
         String md5Hex = DigestUtils
                 .md5Hex(user.getPassword()).toUpperCase();
 
         user.setPassword(md5Hex);
+
+        emailService.sendEmailVerification(user);
+        return userRepository.save(user);
+    }
+
+    public User verifyCode(Long userId, String code) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getVerificationCodeTimeExpiration().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("The verification code has expired.");
+        }
+
+        if (!user.getVerificationCode().equals(code)) {
+            throw new RuntimeException("Invalid verification code.");
+        }
+
+        user.setVerifiedAccount(true);
         return userRepository.save(user);
     }
 

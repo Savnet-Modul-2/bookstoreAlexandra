@@ -1,5 +1,7 @@
 package com.modul2.bookstore.dto;
 
+import java.time.LocalDateTime;
+
 public class UserDTO {
     private Long id;
     private String firstName;
@@ -10,6 +12,9 @@ public class UserDTO {
     private String phoneNumber;
     private String password;
     private String country;
+    private Boolean verifiedAccount = false;
+    private String verificationCode;
+    private LocalDateTime verificationCodeTimeExpiration;
 
     public Long getId() {
         return id;
@@ -81,5 +86,29 @@ public class UserDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Boolean getVerifiedAccount() {
+        return verifiedAccount;
+    }
+
+    public void setVerifiedAccount(Boolean verifiedAccount) {
+        this.verifiedAccount = verifiedAccount;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getVerificationCodeTimeExpiration() {
+        return verificationCodeTimeExpiration;
+    }
+
+    public void setVerificationCodeTimeExpiration(LocalDateTime verificationCodeTimeExpiration) {
+        this.verificationCodeTimeExpiration = verificationCodeTimeExpiration;
     }
 }
