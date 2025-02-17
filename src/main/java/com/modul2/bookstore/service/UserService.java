@@ -1,6 +1,8 @@
 package com.modul2.bookstore.service;
 
 import com.modul2.bookstore.entities.User;
+import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
+import com.modul2.bookstore.exceptions.InvalidPasswordException;
 import com.modul2.bookstore.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -20,8 +22,8 @@ public class UserService {
     private EmailService emailService;
 
     public User create(User user) {
-        if(user.getId() != null) {
-            throw new RuntimeException("You cannot provide an ID to a new user that you want to create");
+        if(userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("User with this email already exists.");
         }
 
         String md5Hex = DigestUtils
@@ -76,5 +78,20 @@ public class UserService {
         updatedUser.setCountry(userBody.getCountry());
 
         return userRepository.save(updatedUser);
+    }
+
+    public User login(String email, String password) throws InvalidPasswordException, AccountNotVerifiedException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User with email %s not found".formatted(email)));
+
+        if(!user.getVerifiedAccount()){
+            throw new AccountNotVerifiedException("Account not verified.");
+        }
+
+        if(!user.getPassword().equals(password)) {
+            throw new InvalidPasswordException("Invalid password.");
+        }
+
+        return userRepository.save(user);
     }
 }

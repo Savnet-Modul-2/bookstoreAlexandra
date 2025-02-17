@@ -20,6 +20,7 @@ public class UserMapper {
         return user;
     }
 
+    // fara ultimele 2
     public static UserDTO user2UserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());

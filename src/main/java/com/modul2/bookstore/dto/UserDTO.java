@@ -16,6 +16,8 @@ public class UserDTO {
     private String verificationCode;
     private LocalDateTime verificationCodeTimeExpiration;
 
+    //fara ultimele 2
+
     public Long getId() {
         return id;
     }

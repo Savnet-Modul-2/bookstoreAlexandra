@@ -2,6 +2,8 @@ package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.UserDTO;
 import com.modul2.bookstore.entities.User;
+import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
+import com.modul2.bookstore.exceptions.InvalidPasswordException;
 import com.modul2.bookstore.mapper.UserMapper;
 import com.modul2.bookstore.repository.UserRepository;
 import com.modul2.bookstore.service.UserService;
@@ -58,5 +60,12 @@ public class UserController {
     public ResponseEntity<?> verifyCode(@RequestParam("userId") Long userId, @RequestParam("code") String code) {
         User verifiedUser = userService.verifyCode(userId, code);
         return ResponseEntity.ok(UserMapper.user2UserDTO(verifiedUser));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) throws InvalidPasswordException, AccountNotVerifiedException {
+        User userToLogin = UserMapper.userDTO2User(userDTO);
+        User loggedUser = userService.login(userToLogin.getEmail(), userToLogin.getPassword());
+        return ResponseEntity.ok(loggedUser.getId());
     }
 }
