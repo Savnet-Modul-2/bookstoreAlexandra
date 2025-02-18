@@ -1,24 +1,44 @@
-package com.modul2.bookstore.dto;
+package com.modul2.bookstore.entities;
 
-import com.modul2.bookstore.entities.Gender;
+import jakarta.persistence.*;
+
 
 import java.time.LocalDateTime;
 
-public class UserDTO {
+@Entity(name = "librarian")
+@Table(name = "LIBRARIAN", schema = "public")
+public class Librarian {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
+
+    @Column(name = "FIRST_NAME")
     private String firstName;
+
+    @Column(name = "LAST_NAME")
     private String lastName;
-    private Integer yearOfBirth;
-    private Gender gender;
+
+    @Column(name = "EMAIL")
     private String email;
-    private String phoneNumber;
+
+    @Column(name = "PASSWORD")
     private String password;
-    private String country;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "library_id", referencedColumnName = "id")
+    private Library library;
+
+    @Column(name = "VERIFIED_ACCOUNT")
     private Boolean verifiedAccount = false;
+
+    @Column(name = "VERIFICATION_CODE")
     private String verificationCode;
+
+    @Column(name = "VERIFICATION_CODE_TIME_EXPIRATION")
     private LocalDateTime verificationCodeTimeExpiration;
 
-    //fara ultimele 2
+
 
     public Long getId() {
         return id;
@@ -44,36 +64,12 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public Integer getYearOfBirth() {
-        return yearOfBirth;
-    }
-
-    public void setYearOfBirth(Integer yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getPassword() {
@@ -84,12 +80,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getCountry() {
-        return country;
+    public Library getLibrary() {
+        return library;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setLibrary(Library library) {
+        this.library = library;
     }
 
     public Boolean getVerifiedAccount() {

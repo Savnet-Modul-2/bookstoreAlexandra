@@ -21,8 +21,8 @@ public class User {
     @Column(name = "YEAR_OF_BIRTH")
     private Integer yearOfBirth;
 
-    @Column(name = "GENDER")
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(name = "EMAIL")
     private String email;
@@ -77,11 +77,11 @@ public class User {
         this.yearOfBirth = yearOfBirth;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
