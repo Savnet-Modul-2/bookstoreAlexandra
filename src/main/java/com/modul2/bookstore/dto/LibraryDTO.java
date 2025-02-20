@@ -1,35 +1,17 @@
-package com.modul2.bookstore.entities;
+package com.modul2.bookstore.dto;
 
-import jakarta.persistence.*;
 
-import java.util.ArrayList;
+import com.modul2.bookstore.entities.Librarian;
+
 import java.util.List;
 
-@Entity(name = "library")
-@Table(name = "LIBRARY", schema = "public")
-public class Library {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+public class LibraryDTO {
     private Long id;
-
-    @Column(name = "NAME")
     private String name;
-
-    @Column(name = "ADDRESS")
     private String address;
-
-    @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-
-    @OneToOne(mappedBy = "library")
     private Librarian librarian;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            fetch = FetchType.LAZY,
-            orphanRemoval = true,
-            mappedBy = "library")
-    private List<Book> books = new ArrayList<>();
+    private List<BookDTO> books;
 
     public Long getId() {
         return id;
@@ -69,21 +51,13 @@ public class Library {
 
     public void setLibrarian(Librarian librarian) {
         this.librarian = librarian;
-        if (librarian != null) {
-            librarian.setLibrary(this);
-        }
     }
 
-    public List<Book> getBooks() {
+    public List<BookDTO> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(List<BookDTO> books) {
         this.books = books;
-    }
-
-    public void addBook(Book book){
-        this.books.add(book);
-        book.setLibrary(this);
     }
 }
