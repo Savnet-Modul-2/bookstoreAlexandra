@@ -22,7 +22,10 @@ public class Library {
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "library")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "library")
     private Librarian librarian;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
@@ -69,9 +72,6 @@ public class Library {
 
     public void setLibrarian(Librarian librarian) {
         this.librarian = librarian;
-        if (librarian != null) {
-            librarian.setLibrary(this);
-        }
     }
 
     public List<Book> getBooks() {

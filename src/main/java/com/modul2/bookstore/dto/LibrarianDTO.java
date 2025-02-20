@@ -10,7 +10,7 @@ public class LibrarianDTO {
     private String lastName;
     private String email;
     private String password;
-    private Library library;
+    private LibraryDTO libraryDTO;
     private Boolean verifiedAccount = false;
     private String verificationCode;
     private LocalDateTime verificationCodeTimeExpiration;
@@ -55,12 +55,12 @@ public class LibrarianDTO {
         this.password = password;
     }
 
-    public Library getLibrary() {
-        return library;
+    public LibraryDTO getLibrary() {
+        return libraryDTO;
     }
 
-    public void setLibrary(Library library) {
-        this.library = library;
+    public void setLibrary(LibraryDTO libraryDTO) {
+        this.libraryDTO = libraryDTO;
     }
 
     public Boolean getVerifiedAccount() {

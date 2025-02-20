@@ -4,6 +4,7 @@ import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
 import com.modul2.bookstore.exceptions.InvalidPasswordException;
 import com.modul2.bookstore.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,17 @@ public class UserService {
 
     public User create(User user) {
         if(userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("User with this email already exists.");
+            throw new EntityExistsException("User with the email address %s already exists".formatted(user.getEmail()));
         }
 
         String md5Hex = DigestUtils
                 .md5Hex(user.getPassword()).toUpperCase();
-
         user.setPassword(md5Hex);
 
-        emailService.sendEmailVerification(user);
+        user.setVerificationCode(String.valueOf(new Random().nextInt(10000,99999)));
+        user.setVerificationCodeTimeExpiration(LocalDateTime.now().plusMinutes(5));
+
+        emailService.sendEmailVerification(user.getEmail(), user.getVerificationCode());
         return userRepository.save(user);
     }
 

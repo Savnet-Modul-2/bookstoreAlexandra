@@ -5,13 +5,14 @@ import com.modul2.bookstore.entities.Librarian;
 
 
 public class LibrarianMapper {
+
     public static Librarian librarianDto2Librarian(LibrarianDTO librarianDTO) {
         Librarian librarian = new Librarian();
         librarian.setFirstName(librarianDTO.getFirstName());
         librarian.setLastName(librarianDTO.getLastName());
         librarian.setEmail(librarianDTO.getEmail());
         librarian.setPassword(librarianDTO.getPassword());
-        librarian.setLibrary(librarianDTO.getLibrary());
+        librarian.setLibrary(LibraryMapper.libraryDto2Library(librarianDTO.getLibrary()));
         librarian.setVerifiedAccount(librarianDTO.getVerifiedAccount());
         librarian.setVerificationCode(librarianDTO.getVerificationCode());
         librarian.setVerificationCodeTimeExpiration(librarianDTO.getVerificationCodeTimeExpiration());
@@ -26,7 +27,7 @@ public class LibrarianMapper {
         librarianDTO.setLastName(librarian.getLastName());
         librarianDTO.setEmail(librarian.getEmail());
         librarianDTO.setPassword(librarian.getPassword());
-        librarianDTO.setLibrary(librarian.getLibrary());
+        librarianDTO.setLibrary(LibraryMapper.library2LibraryDto(librarian.getLibrary()));
         librarianDTO.setVerifiedAccount(librarian.getVerifiedAccount());
         librarianDTO.setVerificationCode(librarian.getVerificationCode());
         librarianDTO.setVerificationCodeTimeExpiration(librarian.getVerificationCodeTimeExpiration());

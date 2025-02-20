@@ -25,7 +25,7 @@ public class Librarian {
     @Column(name = "PASSWORD")
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "library_id", referencedColumnName = "id")
     private Library library;
 
@@ -86,6 +86,7 @@ public class Librarian {
 
     public void setLibrary(Library library) {
         this.library = library;
+        library.setLibrarian(this);
     }
 
     public Boolean getVerifiedAccount() {

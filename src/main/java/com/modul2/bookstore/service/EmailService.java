@@ -20,15 +20,11 @@ public class EmailService {
     @Autowired
     private UserRepository userRepository;
 
-    public void sendEmailVerification(User user) {
-        user.setVerificationCode(String.valueOf(new Random().nextInt(10000,99999)));
-        user.setVerificationCodeTimeExpiration(LocalDateTime.now().plusMinutes(5));
-        userRepository.save(user);
-
+    public void sendEmailVerification(String email, String code) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
+        message.setTo(email);
         message.setSubject("Verification code for authentication in bookstore app");
-        message.setText("Your verification code is : " + user.getVerificationCode());
+        message.setText("Your verification code is : " + code);
 
         mailSender.send(message);
     }

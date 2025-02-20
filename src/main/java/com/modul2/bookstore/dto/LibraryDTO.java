@@ -10,7 +10,6 @@ public class LibraryDTO {
     private String name;
     private String address;
     private String phoneNumber;
-    private Librarian librarian;
     private List<BookDTO> books;
 
     public Long getId() {
@@ -43,14 +42,6 @@ public class LibraryDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Librarian getLibrarian() {
-        return librarian;
-    }
-
-    public void setLibrarian(Librarian librarian) {
-        this.librarian = librarian;
     }
 
     public List<BookDTO> getBooks() {
