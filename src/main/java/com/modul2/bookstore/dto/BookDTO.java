@@ -13,7 +13,6 @@ public class BookDTO {
     private Integer nrOfPages;
     private Category category;
     private String language;
-    private Library library;
 
     public Long getId() {
         return id;
@@ -71,11 +70,4 @@ public class BookDTO {
         this.language = language;
     }
 
-    public Library getLibrary() {
-        return library;
-    }
-
-    public void setLibrary(Library library) {
-        this.library = library;
-    }
 }
