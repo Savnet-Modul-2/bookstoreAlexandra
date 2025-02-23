@@ -1,12 +1,9 @@
 package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.BookDTO;
-import com.modul2.bookstore.dto.LibrarianDTO;
 import com.modul2.bookstore.dto.LibraryDTO;
-import com.modul2.bookstore.entities.Librarian;
 import com.modul2.bookstore.entities.Library;
 import com.modul2.bookstore.mapper.BookMapper;
-import com.modul2.bookstore.mapper.LibrarianMapper;
 import com.modul2.bookstore.mapper.LibraryMapper;
 import com.modul2.bookstore.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +22,12 @@ public class LibraryController {
     public ResponseEntity<?> addBookToLibrary(@PathVariable(name = "libraryId") Long libraryID, @RequestBody BookDTO bookDTO){
         Library library = libraryService.addBookToLibrary(libraryID, BookMapper.bookDto2Book(bookDTO));
         return ResponseEntity.ok(LibraryMapper.library2LibraryDto(library));
+    }
+
+    @PutMapping("/{libraryId}/add-book/{bookId}")
+    public ResponseEntity<?> addBookToUser(@PathVariable Long libraryId, @PathVariable Long bookId) {
+        Library updatedLibrary = libraryService.addBookToLibrary(libraryId, bookId);
+        return ResponseEntity.ok(LibraryMapper.library2LibraryDto(updatedLibrary));
     }
 
     @DeleteMapping("/{libraryId}/remove-book/{bookId}")

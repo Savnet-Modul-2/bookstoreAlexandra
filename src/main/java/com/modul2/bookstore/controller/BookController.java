@@ -5,6 +5,8 @@ import com.modul2.bookstore.entities.Book;
 import com.modul2.bookstore.mapper.BookMapper;
 import com.modul2.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +31,16 @@ public class BookController {
         return ResponseEntity.ok(BookMapper.book2BookDto(foundBook));
     }
 
-    @GetMapping()
-    public ResponseEntity<?> findAll() {
+    @GetMapping
+    public ResponseEntity<?> findAll(@RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+        if (pageSize != null && pageNumber != null) {
+            Page<Book> bookPage = bookService.findAll(PageRequest.of(pageNumber, pageSize));
+            return ResponseEntity.ok(bookPage.map(BookMapper::book2BookDto));
+        }
         List<Book> books = bookService.findAll();
         return ResponseEntity.ok(books.stream().map(BookMapper::book2BookDto).toList());
     }
+
 
     @DeleteMapping("/{bookId}")
     public ResponseEntity<?> deleteById(@PathVariable(name = "bookId") Long bookIdToDelete) {

@@ -64,7 +64,11 @@ public class Book {
     }
 
     public void setAppearanceDate(LocalDateTime appearanceDate) {
-        this.appearanceDate = appearanceDate;
+        if (appearanceDate == null) {
+            this.appearanceDate = LocalDateTime.now();
+        } else {
+            this.appearanceDate = appearanceDate;
+        }
     }
 
     public Integer getNrOfPages() {

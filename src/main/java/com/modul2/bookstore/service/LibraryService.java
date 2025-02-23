@@ -3,6 +3,7 @@ package com.modul2.bookstore.service;
 import com.modul2.bookstore.entities.Book;
 import com.modul2.bookstore.entities.Librarian;
 import com.modul2.bookstore.entities.Library;
+import com.modul2.bookstore.repository.BookRepository;
 import com.modul2.bookstore.repository.LibraryRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,10 +19,23 @@ import java.util.Random;
 public class LibraryService {
     @Autowired
     private LibraryRepository libraryRepository;
+    @Autowired
+    private BookRepository bookRepository;
 
     public Library addBookToLibrary(Long libraryID, Book book) {
         Library library = libraryRepository.findById(libraryID)
                 .orElseThrow(EntityNotFoundException::new);
+
+        library.addBook(book);
+        return libraryRepository.save(library);
+    }
+
+    public Library addBookToLibrary(Long libraryId, Long bookId) {
+        Library library = libraryRepository.findById(libraryId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
 
         library.addBook(book);
         return libraryRepository.save(library);
