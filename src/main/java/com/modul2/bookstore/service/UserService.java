@@ -4,6 +4,7 @@ import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
 import com.modul2.bookstore.exceptions.InvalidPasswordException;
 import com.modul2.bookstore.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,46 +23,28 @@ public class UserService {
     private EmailService emailService;
 
     public User create(User user) {
-        if(userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("User with this email already exists.");
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new EntityExistsException("User with the email address %s already exists".formatted(user.getEmail()));
         }
 
-        String md5Hex = DigestUtils
+        String encryptedPassword = DigestUtils
                 .md5Hex(user.getPassword()).toUpperCase();
+        user.setPassword(encryptedPassword);
 
-        user.setPassword(md5Hex);
+        user.setVerificationCode(String.valueOf(new Random().nextInt(10000, 99999)));
+        user.setVerificationCodeTimeExpiration(LocalDateTime.now().plusMinutes(5));
 
-        emailService.sendEmailVerification(user);
+        emailService.sendEmailVerification(user.getEmail(), user.getVerificationCode());
         return userRepository.save(user);
     }
 
-    public User verifyCode(Long userId, String code) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (user.getVerificationCodeTimeExpiration().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("The verification code has expired.");
-        }
-
-        if (!user.getVerificationCode().equals(code)) {
-            throw new RuntimeException("Invalid verification code.");
-        }
-
-        user.setVerifiedAccount(true);
-        return userRepository.save(user);
-    }
-
-    public User getById(Long userId){
+    public User getById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
     public List<User> findAll() {
         return userRepository.findAll();
-    }
-
-    public void deleteById(Long userId) {
-        userRepository.deleteById(userId);
     }
 
     public User updateById(Long userId, User userBody) {
@@ -80,15 +63,35 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
+    public void deleteById(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    public User verifyAccount(Long userId, String code) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getVerificationCodeTimeExpiration().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("The verification code has expired.");
+        }
+
+        if (!user.getVerificationCode().equals(code)) {
+            throw new RuntimeException("Invalid verification code.");
+        }
+
+        user.setVerifiedAccount(true);
+        return userRepository.save(user);
+    }
+
     public User login(String email, String password) throws InvalidPasswordException, AccountNotVerifiedException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User with email %s not found".formatted(email)));
 
-        if(!user.getVerifiedAccount()){
+        if (!user.getVerifiedAccount()) {
             throw new AccountNotVerifiedException("Account not verified.");
         }
 
-        if(!user.getPassword().equals(password)) {
+        if (!user.getPassword().equals(password)) {
             throw new InvalidPasswordException("Invalid password.");
         }
 

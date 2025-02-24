@@ -1,5 +1,7 @@
 package com.modul2.bookstore.dto;
 
+import com.modul2.bookstore.entities.Gender;
+
 import java.time.LocalDateTime;
 
 public class UserDTO {
@@ -7,7 +9,7 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private Integer yearOfBirth;
-    private String gender;
+    private Gender gender;
     private String email;
     private String phoneNumber;
     private String password;
@@ -16,15 +18,9 @@ public class UserDTO {
     private String verificationCode;
     private LocalDateTime verificationCodeTimeExpiration;
 
-    //fara ultimele 2
+    public Long getId() { return id; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getFirstName() {
         return firstName;
@@ -50,11 +46,11 @@ public class UserDTO {
         this.yearOfBirth = yearOfBirth;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

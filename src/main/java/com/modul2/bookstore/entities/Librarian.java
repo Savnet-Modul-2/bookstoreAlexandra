@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "user")
-@Table(name = "USER", schema = "public")
-public class User {
+@Entity(name = "librarian")
+@Table(name = "LIBRARIAN", schema = "public")
+public class Librarian {
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
     @Column(name = "FIRST_NAME")
@@ -18,23 +18,15 @@ public class User {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "YEAR_OF_BIRTH")
-    private Integer yearOfBirth;
-
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
     @Column(name = "EMAIL")
     private String email;
-
-    @Column(name = "PHONE_NUMBER")
-    private String phoneNumber;
 
     @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "COUNTRY")
-    private String country;
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JoinColumn(name = "library_id", referencedColumnName = "id")
+    private Library library;
 
     @Column(name = "VERIFIED_ACCOUNT")
     private Boolean verifiedAccount = false;
@@ -69,36 +61,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Integer getYearOfBirth() {
-        return yearOfBirth;
-    }
-
-    public void setYearOfBirth(Integer yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getPassword() {
@@ -109,12 +77,13 @@ public class User {
         this.password = password;
     }
 
-    public String getCountry() {
-        return country;
+    public Library getLibrary() {
+        return library;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setLibrary(Library library) {
+        this.library = library;
+        library.setLibrarian(this);
     }
 
     public Boolean getVerifiedAccount() {
