@@ -18,24 +18,11 @@ public class LibrarianController {
     @Autowired
     private LibrarianService librarianService;
 
-    @PostMapping()
-    public ResponseEntity<?> create (@RequestBody LibrarianDTO librarianDTO){
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody LibrarianDTO librarianDTO) {
         Librarian librarianToCreate = LibrarianMapper.librarianDto2Librarian(librarianDTO);
         Librarian createdLibrarian = librarianService.create(librarianToCreate);
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(createdLibrarian));
-    }
-
-    @PutMapping("/verify")
-    public ResponseEntity<?> verifyCode(@RequestParam("librarianId") Long librarianId, @RequestParam("code") String code) {
-        Librarian verifiedLibrarian = librarianService.verifyCode(librarianId, code);
-        return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(verifiedLibrarian));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LibrarianDTO librarianDTO) throws InvalidPasswordException, AccountNotVerifiedException {
-        Librarian librarianToLogin = LibrarianMapper.librarianDto2Librarian(librarianDTO);
-        Librarian loggedLibrarian = librarianService.login(librarianToLogin.getEmail(), librarianToLogin.getPassword());
-        return ResponseEntity.ok(loggedLibrarian.getId());
     }
 
     @GetMapping("/{librarianId}")
@@ -44,10 +31,19 @@ public class LibrarianController {
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(foundLibrarian));
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> findAll() {
         List<Librarian> librarians = librarianService.findAll();
-        return ResponseEntity.ok(librarians.stream().map(LibrarianMapper::librarian2LibrarianDto).toList());
+        return ResponseEntity.ok(librarians.stream()
+                .map(LibrarianMapper::librarian2LibrarianDto)
+                .toList());
+    }
+
+    @PutMapping("/{librarianId}")
+    public ResponseEntity<?> updateById(@PathVariable(name = "librarianId") Long librarianIdToUpdate, @RequestBody LibrarianDTO librarianBody) {
+        Librarian librarianEntity = LibrarianMapper.librarianDto2Librarian(librarianBody);
+        Librarian updatedLibrarian = librarianService.updateById(librarianIdToUpdate, librarianEntity);
+        return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(updatedLibrarian));
     }
 
     @DeleteMapping("/{librarianId}")
@@ -56,10 +52,16 @@ public class LibrarianController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{librarianId}")
-    public ResponseEntity<?> updateById(@PathVariable(name = "librarianId") Long librarianIdToUpdate, @RequestBody LibrarianDTO librarianBody) {
-        Librarian librarianEntity = LibrarianMapper.librarianDto2Librarian(librarianBody);
-        Librarian updatedLibrarian = librarianService.updateById(librarianIdToUpdate, librarianEntity);
-        return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(updatedLibrarian));
+    @PutMapping("/verify")
+    public ResponseEntity<?> verifyAccount(@RequestParam("librarianId") Long librarianId, @RequestParam("code") String code) {
+        Librarian verifiedLibrarian = librarianService.verifyAccount(librarianId, code);
+        return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(verifiedLibrarian));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LibrarianDTO librarianDTO) throws InvalidPasswordException, AccountNotVerifiedException {
+        Librarian librarianToLogin = LibrarianMapper.librarianDto2Librarian(librarianDTO);
+        Librarian loggedLibrarian = librarianService.login(librarianToLogin.getEmail(), librarianToLogin.getPassword());
+        return ResponseEntity.ok(loggedLibrarian.getId());
     }
 }

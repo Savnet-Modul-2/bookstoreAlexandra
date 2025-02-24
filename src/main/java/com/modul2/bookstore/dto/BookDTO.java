@@ -1,7 +1,6 @@
 package com.modul2.bookstore.dto;
 
-import com.modul2.bookstore.entities.Category;
-import com.modul2.bookstore.entities.Library;
+import com.modul2.bookstore.entities.BookCategory;
 
 import java.time.LocalDateTime;
 
@@ -9,9 +8,9 @@ public class BookDTO {
     private Long id;
     private String title;
     private String author;
-    private LocalDateTime appearanceDate ;
+    private LocalDateTime appearanceDate;
     private Integer nrOfPages;
-    private Category category;
+    private BookCategory bookCategory;
     private String language;
 
     public Long getId() {
@@ -54,12 +53,12 @@ public class BookDTO {
         this.nrOfPages = nrOfPages;
     }
 
-    public Category getCategory() {
-        return category;
+    public BookCategory getBookCategory() {
+        return bookCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setBookCategory(BookCategory bookCategory) {
+        this.bookCategory = bookCategory;
     }
 
     public String getLanguage() {

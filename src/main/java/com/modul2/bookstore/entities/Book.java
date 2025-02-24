@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-
 @Entity(name = "book")
 @Table(name = "BOOK", schema = "public")
 public class Book {
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  //genereaza automat id ul
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "TITLE")
@@ -20,13 +19,13 @@ public class Book {
     private String author;
 
     @Column(name = "APPEARANCE_DATE")
-    private LocalDateTime appearanceDate ;
+    private LocalDateTime appearanceDate;
 
     @Column(name = "NR_OF_PAGES")
     private Integer nrOfPages;
 
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private BookCategory bookCategory;
 
     @Column(name = "LANGUAGE")
     private String language;
@@ -79,12 +78,12 @@ public class Book {
         this.nrOfPages = nrOfPages;
     }
 
-    public Category getCategory() {
-        return category;
+    public BookCategory getBookCategory() {
+        return bookCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setBookCategory(BookCategory bookCategory) {
+        this.bookCategory = bookCategory;
     }
 
     public String getLanguage() {

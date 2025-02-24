@@ -1,8 +1,5 @@
 package com.modul2.bookstore.dto;
 
-
-import com.modul2.bookstore.entities.Librarian;
-
 import java.util.List;
 
 public class LibraryDTO {

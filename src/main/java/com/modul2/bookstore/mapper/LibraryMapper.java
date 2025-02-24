@@ -20,7 +20,6 @@ public class LibraryMapper {
         return library;
     }
 
-
     public static LibraryDTO library2LibraryDto(Library library) {
         LibraryDTO libraryDTO = new LibraryDTO();
         libraryDTO.setId(library.getId());

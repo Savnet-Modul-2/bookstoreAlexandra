@@ -18,7 +18,7 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody BookDTO bookDto) {
         Book bookToCreate = BookMapper.bookDto2Book(bookDto);
         Book createdBook = bookService.create(bookToCreate);
@@ -38,14 +38,9 @@ public class BookController {
             return ResponseEntity.ok(bookPage.map(BookMapper::book2BookDto));
         }
         List<Book> books = bookService.findAll();
-        return ResponseEntity.ok(books.stream().map(BookMapper::book2BookDto).toList());
-    }
-
-
-    @DeleteMapping("/{bookId}")
-    public ResponseEntity<?> deleteById(@PathVariable(name = "bookId") Long bookIdToDelete) {
-        bookService.deleteById(bookIdToDelete);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(books.stream()
+                .map(BookMapper::book2BookDto)
+                .toList());
     }
 
     @PutMapping("/{bookId}")
@@ -53,5 +48,11 @@ public class BookController {
         Book bookEntity = BookMapper.bookDto2Book(bookBody);
         Book updatedBook = bookService.updateById(bookIdToUpdate, bookEntity);
         return ResponseEntity.ok(BookMapper.book2BookDto(updatedBook));
+    }
+
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<?> deleteById(@PathVariable(name = "bookId") Long bookIdToDelete) {
+        bookService.deleteById(bookIdToDelete);
+        return ResponseEntity.noContent().build();
     }
 }

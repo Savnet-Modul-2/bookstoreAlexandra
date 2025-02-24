@@ -22,16 +22,10 @@ public class Library {
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            fetch = FetchType.LAZY,
-            orphanRemoval = true,
-            mappedBy = "library")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "library")
     private Librarian librarian;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            fetch = FetchType.LAZY,
-            orphanRemoval = true,
-            mappedBy = "library")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "library")
     private List<Book> books = new ArrayList<>();
 
     public Long getId() {
@@ -82,7 +76,7 @@ public class Library {
         this.books = books;
     }
 
-    public void addBook(Book book){
+    public void addBook(Book book) {
         this.books.add(book);
         book.setLibrary(this);
     }

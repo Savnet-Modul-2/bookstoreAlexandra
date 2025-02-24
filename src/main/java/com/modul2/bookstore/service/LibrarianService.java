@@ -23,21 +23,48 @@ public class LibrarianService {
     private EmailService emailService;
 
     public Librarian create(Librarian librarian) {
-        if (librarian.getId() != null){
+        if (librarianRepository.findByEmail(librarian.getEmail()).isPresent()) {
             throw new EntityExistsException("Librarian with the email address %s already exists".formatted(librarian.getEmail()));
         }
 
-        String md5Hex = DigestUtils.md5Hex(librarian.getPassword()).toUpperCase();
-        librarian.setPassword(md5Hex);
+        String encryptedPassword = DigestUtils
+                .md5Hex(librarian.getPassword()).toUpperCase();
+        librarian.setPassword(encryptedPassword);
 
-        librarian.setVerificationCode(String.valueOf(new Random().nextInt(10000,99999)));
+        librarian.setVerificationCode(String.valueOf(new Random().nextInt(10000, 99999)));
         librarian.setVerificationCodeTimeExpiration(LocalDateTime.now().plusMinutes(5));
 
         emailService.sendEmailVerification(librarian.getEmail(), librarian.getVerificationCode());
         return librarianRepository.save(librarian);
     }
 
-    public Librarian verifyCode(Long librarianId, String code) {
+    public Librarian getById(Long librarianId) {
+        return librarianRepository.findById(librarianId)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public List<Librarian> findAll() {
+        return librarianRepository.findAll();
+    }
+
+    public Librarian updateById(Long librarianId, Librarian librarianBody) {
+        Librarian updatedLibrarian = librarianRepository.findById(librarianId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        updatedLibrarian.setFirstName(librarianBody.getFirstName());
+        updatedLibrarian.setLastName(librarianBody.getLastName());
+        updatedLibrarian.setEmail(librarianBody.getEmail());
+        updatedLibrarian.setPassword(DigestUtils.md5Hex(librarianBody.getPassword()).toUpperCase());
+        updatedLibrarian.setLibrary(librarianBody.getLibrary());
+
+        return librarianRepository.save(updatedLibrarian);
+    }
+
+    public void deleteById(Long librarianId) {
+        librarianRepository.deleteById(librarianId);
+    }
+
+    public Librarian verifyAccount(Long librarianId, String code) {
         Librarian librarian = librarianRepository.findById(librarianId)
                 .orElseThrow(() -> new RuntimeException("Librarian not found"));
 
@@ -55,44 +82,16 @@ public class LibrarianService {
 
     public Librarian login(String email, String password) throws InvalidPasswordException, AccountNotVerifiedException {
         Librarian librarian = librarianRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Email with email %s not found".formatted(email)));
+                .orElseThrow(() -> new EntityNotFoundException("Librarian with email %s not found".formatted(email)));
 
-        if(!librarian.getVerifiedAccount()){
+        if (!librarian.getVerifiedAccount()) {
             throw new AccountNotVerifiedException("Account not verified.");
         }
 
-        if(!librarian.getPassword().equals(password)) {
+        if (!librarian.getPassword().equals(password)) {
             throw new InvalidPasswordException("Invalid password.");
         }
 
         return librarianRepository.save(librarian);
     }
-
-    public Librarian getById(Long librarianId){
-        return librarianRepository.findById(librarianId)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public List<Librarian> findAll() {
-        return librarianRepository.findAll();
-    }
-
-    public void deleteById(Long librarianId) {
-        librarianRepository.deleteById(librarianId);
-    }
-
-    public Librarian updateById(Long librarianId, Librarian librarianBody) {
-        Librarian updatedLibrarian = librarianRepository.findById(librarianId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        updatedLibrarian.setFirstName(librarianBody.getFirstName());
-        updatedLibrarian.setLastName(librarianBody.getLastName());
-        updatedLibrarian.setEmail(librarianBody.getEmail());
-        updatedLibrarian.setPassword(DigestUtils.md5Hex(librarianBody.getPassword()).toUpperCase());
-        updatedLibrarian.setLibrary(librarianBody.getLibrary());
-
-        return librarianRepository.save(updatedLibrarian);
-    }
-
-
 }

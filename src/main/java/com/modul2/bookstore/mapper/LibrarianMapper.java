@@ -3,9 +3,7 @@ package com.modul2.bookstore.mapper;
 import com.modul2.bookstore.dto.LibrarianDTO;
 import com.modul2.bookstore.entities.Librarian;
 
-
 public class LibrarianMapper {
-
     public static Librarian librarianDto2Librarian(LibrarianDTO librarianDTO) {
         Librarian librarian = new Librarian();
         librarian.setFirstName(librarianDTO.getFirstName());
@@ -18,7 +16,6 @@ public class LibrarianMapper {
         librarian.setVerificationCodeTimeExpiration(librarianDTO.getVerificationCodeTimeExpiration());
         return librarian;
     }
-
 
     public static LibrarianDTO librarian2LibrarianDto(Librarian librarian) {
         LibrarianDTO librarianDTO = new LibrarianDTO();

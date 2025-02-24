@@ -2,7 +2,6 @@ package com.modul2.bookstore.entities;
 
 import jakarta.persistence.*;
 
-
 import java.time.LocalDateTime;
 
 @Entity(name = "librarian")
@@ -37,8 +36,6 @@ public class Librarian {
 
     @Column(name = "VERIFICATION_CODE_TIME_EXPIRATION")
     private LocalDateTime verificationCodeTimeExpiration;
-
-
 
     public Long getId() {
         return id;
