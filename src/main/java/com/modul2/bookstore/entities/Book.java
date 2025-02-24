@@ -3,6 +3,8 @@ package com.modul2.bookstore.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "book")
 @Table(name = "BOOK", schema = "public")
@@ -33,6 +35,12 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "library_id")
     private Library library;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "book")
+    private List<Exemplary> exemplaries = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -100,5 +108,18 @@ public class Book {
 
     public void setLibrary(Library library) {
         this.library = library;
+    }
+
+    public List<Exemplary> getExemplaries() {
+        return exemplaries;
+    }
+
+    public void setExemplaries(List<Exemplary> exemplaries) {
+        this.exemplaries = exemplaries;
+    }
+
+    public void addExemplary(Exemplary exemplary) {
+        this.exemplaries.add(exemplary);
+        exemplary.setBook(this);
     }
 }
