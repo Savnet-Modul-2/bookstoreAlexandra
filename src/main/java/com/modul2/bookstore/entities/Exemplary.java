@@ -14,7 +14,7 @@ public class Exemplary {
     private String publisher;
 
     @Column(name = "MAX_BORROW_DAYS")
-    private String maxBorrowDays;
+    private Integer maxBorrowDays;
 
     @ManyToOne
     @JoinColumn(name = "book_id")
@@ -36,11 +36,11 @@ public class Exemplary {
         this.publisher = publisher;
     }
 
-    public String getMaxBorrowDays() {
+    public Integer getMaxBorrowDays() {
         return maxBorrowDays;
     }
 
-    public void setMaxBorrowDays(String maxBorrowDays) {
+    public void setMaxBorrowDays(Integer maxBorrowDays) {
         this.maxBorrowDays = maxBorrowDays;
     }
 
