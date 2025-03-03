@@ -30,11 +30,9 @@ public class ReservationService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(EntityNotFoundException::new);
 
-
         Exemplary availableExemplary = exemplaryRepository
                 .findAvailableExemplary(bookId, startDate, endDate)
                 .orElseThrow(EntityNotFoundException::new);
-
 
         Reservation reservation = new Reservation();
         reservation.setStartDate(startDate);

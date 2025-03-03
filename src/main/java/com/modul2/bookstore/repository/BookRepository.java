@@ -11,8 +11,8 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = """
             SELECT book FROM book book
-            WHERE (:author IS NULL OR book.author = :author)
-            AND (:title IS NULL OR book.title = :title)
+            WHERE (:author IS NULL OR LOWER(book.author) LIKE LOWER(CONCAT('%', :author, '%')))
+            AND (:title IS NULL OR LOWER(book.title) LIKE LOWER(CONCAT('%', :title, '%')))
             """)
     List<Book> findBooks(String author, String title);
 }

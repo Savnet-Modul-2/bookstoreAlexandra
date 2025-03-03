@@ -18,6 +18,6 @@ public class ReservationController {
     @PostMapping("/{userId}/{bookId}")
     public ResponseEntity<?> reserveBook(@PathVariable(name = "userId") Long userId, @PathVariable(name = "bookId") Long bookId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
         Reservation createdReservation = reservationService.reserveBook(userId, bookId, startDate, endDate);
-        return ResponseEntity.ok(ReservationMapper.reservationTo2ReservationDTO(createdReservation));
+        return ResponseEntity.ok(ReservationMapper.reservation2ReservationDTO(createdReservation));
     }
 }

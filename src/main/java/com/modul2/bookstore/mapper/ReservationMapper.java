@@ -4,7 +4,7 @@ import com.modul2.bookstore.dto.ReservationDTO;
 import com.modul2.bookstore.entities.Reservation;
 
 public class ReservationMapper {
-    public static Reservation reservationDTOTo2Reservation(ReservationDTO reservationDTO) {
+    public static Reservation reservationDTO2Reservation(ReservationDTO reservationDTO) {
         Reservation reservation = new Reservation();
         reservation.setStartDate(reservationDTO.getStartDate());
         reservation.setEndDate(reservationDTO.getEndDate());
@@ -15,7 +15,7 @@ public class ReservationMapper {
         return reservation;
     }
 
-    public static ReservationDTO reservationTo2ReservationDTO(Reservation reservation) {
+    public static ReservationDTO reservation2ReservationDTO(Reservation reservation) {
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setId(reservation.getId());
         reservationDTO.setStartDate(reservation.getStartDate());
