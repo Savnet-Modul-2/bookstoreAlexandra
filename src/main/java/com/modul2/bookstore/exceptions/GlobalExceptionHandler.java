@@ -35,4 +35,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetail errorDetail = new ErrorDetail(accountNotVerifiedException.getMessage());
         return new ResponseEntity<>(errorDetail, BAD_REQUEST);
     }
+
+    @ExceptionHandler(NoExemplaryAvailableException.class)
+    public ResponseEntity<?> handleNoExemplaryAvailableException(NoExemplaryAvailableException ex) {
+        ErrorDetail error = new ErrorDetail(ex.getMessage());
+        return new ResponseEntity<>(error, BAD_REQUEST);
+    }
 }

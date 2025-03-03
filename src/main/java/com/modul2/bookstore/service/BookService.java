@@ -35,6 +35,14 @@ public class BookService {
         return bookRepository.findAll(pageRequest);
     }
 
+    public Page<Book> search(PageRequest pageRequest) {
+        return bookRepository.findAll(pageRequest);
+    }
+
+    public List<Book> search(String bookAuthor, String bookTitle) {
+        return bookRepository.findBooks(bookAuthor, bookTitle);
+    }
+
     public Book updateById(Long bookId, Book bookEntity) {
         Book updatedBook = bookRepository.findById(bookId)
                 .orElseThrow(EntityNotFoundException::new);

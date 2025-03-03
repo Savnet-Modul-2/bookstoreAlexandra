@@ -43,6 +43,18 @@ public class BookController {
                 .toList());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam(name = "bookAuthor", required = false) String bookAuthor, @RequestParam(name = "bookTitle", required = false) String bookTitle, @RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+        if (pageSize != null && pageNumber != null) {
+            Page<Book> bookPage = bookService.search(PageRequest.of(pageNumber, pageSize));
+            return ResponseEntity.ok(bookPage.map(BookMapper::book2BookDto));
+        }
+        List<Book> books = bookService.search(bookAuthor, bookTitle);
+        return ResponseEntity.ok(books.stream()
+                .map(BookMapper::book2BookDto)
+                .toList());
+    }
+
     @PutMapping("/{bookId}")
     public ResponseEntity<?> updateById(@PathVariable(name = "bookId") Long bookIdToUpdate, @RequestBody BookDTO bookBody) {
         Book bookEntity = BookMapper.bookDto2Book(bookBody);
