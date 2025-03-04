@@ -11,12 +11,6 @@ public class LibraryMapper {
         library.setName(libraryDTO.getName());
         library.setAddress(libraryDTO.getAddress());
         library.setPhoneNumber(libraryDTO.getPhoneNumber());
-        library.setBooks(libraryDTO.getBooks() != null ?
-                libraryDTO.getBooks().stream()
-                        .map(BookMapper::bookDto2Book)
-                        .peek(book -> book.setLibrary(library))
-                        .toList()
-                : new ArrayList<>());
         return library;
     }
 
@@ -26,9 +20,6 @@ public class LibraryMapper {
         libraryDTO.setName(library.getName());
         libraryDTO.setAddress(library.getAddress());
         libraryDTO.setPhoneNumber(library.getPhoneNumber());
-        libraryDTO.setBooks(library.getBooks().stream()
-                .map(BookMapper::book2BookDto)
-                .toList());
         return libraryDTO;
     }
 }
