@@ -14,8 +14,9 @@ public interface ExemplaryRepository extends JpaRepository<Exemplary, Long> {
             SELECT * FROM exemplary e
             WHERE e.id NOT IN (
                 SELECT r.exemplary_id FROM reservation r
-                WHERE (r.start_date <= :endDate OR r.end_date >= :startDate)
-                AND r.reservation_status IN ('IN_PROGRESS', 'PENDING')
+                WHERE ((r.start_date <= :endDate AND r.end_date >= :startDate)
+                AND r.reservation_status IN ('IN_PROGRESS', 'PENDING')) 
+                OR r.reservation_status = 'DELAYED'
             )
             AND e.book_id = :bookId
             LIMIT 1
