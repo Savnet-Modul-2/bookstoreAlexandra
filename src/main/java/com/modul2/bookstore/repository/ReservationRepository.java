@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByReservationStatusAndStartDateBefore(ReservationStatus reservationStatus, LocalDate startDate);
-    List<Reservation> findByReservationStatusAndEndDateBefore(ReservationStatus reservationStatus, LocalDate endDate);
+    List<Reservation> findByReservationStatusAndStartDateBefore(ReservationStatus reservationStatus, LocalDate date);
+    List<Reservation> findByReservationStatusAndEndDateBefore(ReservationStatus reservationStatus, LocalDate date);
 }
