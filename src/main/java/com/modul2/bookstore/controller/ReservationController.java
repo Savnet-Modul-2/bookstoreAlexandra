@@ -3,10 +3,7 @@ package com.modul2.bookstore.controller;
 import com.modul2.bookstore.dto.ReservationDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.Reservation;
-import com.modul2.bookstore.entities.ReservationStatus;
-import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.mapper.ReservationMapper;
-import com.modul2.bookstore.mapper.UserMapper;
 import com.modul2.bookstore.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +34,8 @@ public class ReservationController {
 
     @GetMapping
     public ResponseEntity<?> findAll() {
-        List<Reservation> users = reservationService.findAll();
-        return ResponseEntity.ok(users.stream()
+        List<Reservation> reservations = reservationService.findAll();
+        return ResponseEntity.ok(reservations.stream()
                 .map(ReservationMapper::reservation2ReservationDTO)
                 .toList());
     }
@@ -49,7 +46,7 @@ public class ReservationController {
         return ResponseEntity.ok(ReservationMapper.reservation2ReservationDTO(reservation));
     }
 
-    @PutMapping("/check-expired")
+    @PutMapping
     public ResponseEntity<?> checkExpiredReservations() {
         List<Reservation> canceledReservations = reservationService.updateExpiredPendingReservations();
         List<Reservation> delayedReservations = reservationService.updateExpiredInProgressReservations();

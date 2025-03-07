@@ -97,7 +97,7 @@ public class ReservationService {
             String bookTitle = reservation.getExemplary().getBook().getTitle();
             String librarianEmail = reservation.getExemplary().getBook().getLibrary().getLibrarian().getEmail();
 
-            String userSubject = "Book return";
+            String userSubject = "Book to return";
             String userText = " You need to return the book '" + bookTitle + "'.";
             emailService.sendEmail(userEmail, userSubject, userText);
 

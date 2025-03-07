@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Constraint(validatedBy = { NotInThePastDateValidator.class})
+@Constraint(validatedBy = { DateNotInThePastValidator.class})
 @Target(ElementType.FIELD)
 @Retention(RUNTIME)
-public @interface ValidNotInThePastDate {
-    String message() default "The start date should not be in the past";
+public @interface DateNotInThePast {
+    String message() default "The date should not be in the past";
 
     Class<?>[] groups() default {};
 

@@ -5,13 +5,13 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.LocalDate;
 
-public class NotInThePastDateValidator implements ConstraintValidator<ValidNotInThePastDate, LocalDate> {
+public class DateNotInThePastValidator implements ConstraintValidator<DateNotInThePast, LocalDate> {
     @Override
-    public void initialize(ValidNotInThePastDate validNotInThePastDate) {
+    public void initialize(DateNotInThePast dateNotInThePast) {
     }
 
     @Override
     public boolean isValid(LocalDate date, ConstraintValidatorContext context) {
-        return date.isAfter(LocalDate.now());
+        return !date.isBefore(LocalDate.now());
     }
 }

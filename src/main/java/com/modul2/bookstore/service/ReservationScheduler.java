@@ -11,7 +11,7 @@ public class ReservationScheduler {
     @Autowired
     private ReservationService reservationService;
 
-    @Scheduled(cron = "0 0 22 * * *")
+    @Scheduled(cron = "0 0 1 * * *")
     public void scheduleReservationUpdates() {
         reservationService.updateExpiredPendingReservations();
         reservationService.updateExpiredInProgressReservations();
