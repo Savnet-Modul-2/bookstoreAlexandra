@@ -3,9 +3,11 @@ package com.modul2.bookstore.controller;
 import com.modul2.bookstore.dto.ReservationDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.Reservation;
+import com.modul2.bookstore.entities.ReservationStatus;
 import com.modul2.bookstore.mapper.ReservationMapper;
 import com.modul2.bookstore.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,9 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @PostMapping("/{userId}/{bookId}")
-    public ResponseEntity<?> reserveBook(@PathVariable(name = "userId") Long userId, @PathVariable(name = "bookId") Long bookId, @Validated(ValidationOrder.class) @RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity<?> reserveBook(@PathVariable(name = "userId") Long userId,
+                                         @PathVariable(name = "bookId") Long bookId,
+                                         @Validated(ValidationOrder.class) @RequestBody ReservationDTO reservationDTO) {
         Reservation createdReservation = reservationService.reserveBook(userId, bookId, ReservationMapper.reservationDTO2Reservation(reservationDTO));
         return ResponseEntity.ok(ReservationMapper.reservation2ReservationDTO(createdReservation));
     }
@@ -40,8 +44,30 @@ public class ReservationController {
                 .toList());
     }
 
+    @GetMapping("/library/{libraryId}")
+    public ResponseEntity<?> getLibraryReservationsByStartDateAndEndDate(@PathVariable(name = "libraryId") Long libraryId,
+                                                                         @RequestParam(name = "startDate") LocalDate startDate,
+                                                                         @RequestParam(name = "endDate") LocalDate endDate,
+                                                                         @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+                                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        Page<Reservation> reservationPage = reservationService.getLibraryReservationsByStartDateAndEndDate(libraryId, startDate, endDate, pageNumber, pageSize);
+        return ResponseEntity.ok(reservationPage.map(ReservationMapper::reservation2ReservationDTO));
+    }
+
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getUserReservationsByStatus(@PathVariable(name = "userId") Long userId,
+                                                         @RequestParam(name = "status") ReservationStatus status,
+                                                         @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
+        Page<Reservation> reservationPage = reservationService.getUserReservationsByStatus(userId, status, pageNumber, pageSize);
+        return ResponseEntity.ok(reservationPage.map(ReservationMapper::reservation2ReservationDTO));
+    }
+
     @PutMapping("/update-reservation-status/{librarianId}/{reservationId}")
-    public ResponseEntity<?> updateReservationStatus(@PathVariable Long librarianId, @PathVariable Long reservationId, @RequestBody ReservationDTO reservationDTO){
+    public ResponseEntity<?> updateReservationStatus(@PathVariable Long librarianId,
+                                                     @PathVariable Long reservationId,
+                                                     @RequestBody ReservationDTO reservationDTO) {
         Reservation reservation = reservationService.updateReservationStatus(librarianId, reservationId, ReservationMapper.reservationDTO2Reservation(reservationDTO));
         return ResponseEntity.ok(ReservationMapper.reservation2ReservationDTO(reservation));
     }

@@ -4,6 +4,10 @@ import com.modul2.bookstore.entities.*;
 import com.modul2.bookstore.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -23,6 +27,8 @@ public class ReservationService {
     private BookRepository bookRepository;
     @Autowired
     private LibrarianRepository librarianRepository;
+    @Autowired
+    private LibraryRepository libraryRepository;
     @Autowired
     private EmailService emailService;
 
@@ -112,4 +118,13 @@ public class ReservationService {
         return reservations;
     }
 
+    public Page<Reservation> getLibraryReservationsByStartDateAndEndDate(Long libraryId, LocalDate startDate, LocalDate endDate, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "startDate"));
+        return reservationRepository.findReservationsByStartDateAndEndDate(libraryId, startDate, endDate, pageable);
+    }
+
+    public Page<Reservation> getUserReservationsByStatus(Long userId, ReservationStatus status, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "startDate"));
+        return reservationRepository.findReservationsByUserAndReservationStatus(userId, status, pageable);
+    }
 }
