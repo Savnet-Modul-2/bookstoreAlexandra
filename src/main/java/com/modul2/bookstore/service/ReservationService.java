@@ -1,5 +1,6 @@
 package com.modul2.bookstore.service;
 
+import com.modul2.bookstore.dto.ReservationsSearchDTO;
 import com.modul2.bookstore.entities.*;
 import com.modul2.bookstore.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -123,8 +124,8 @@ public class ReservationService {
         return reservationRepository.findReservationsByStartDateAndEndDate(libraryId, startDate, endDate, pageable);
     }
 
-    public Page<Reservation> getUserReservationsByStatus(Long userId, ReservationStatus status, Integer pageNumber, Integer pageSize) {
+    public Page<Reservation> getUserReservationsByStatus(Long userId, Integer pageNumber, Integer pageSize, ReservationsSearchDTO reservationsSearchDTO) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "startDate"));
-        return reservationRepository.findReservationsByUserAndReservationStatus(userId, status, pageable);
+        return reservationRepository.findReservationsByUserAndReservationStatus(userId, reservationsSearchDTO.getStartDate(), reservationsSearchDTO.getEndDate(), reservationsSearchDTO.getReservationStatusList(), pageable);
     }
 }

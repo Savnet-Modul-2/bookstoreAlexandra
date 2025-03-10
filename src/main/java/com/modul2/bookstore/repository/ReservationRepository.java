@@ -28,7 +28,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = """
             SELECT r FROM reservation r
             WHERE r.user.id = :userId
-            AND r.reservationStatus = :reservationStatus
+            AND (cast(:startDate as date) IS NULL OR r.startDate >= :startDate) 
+            AND (cast(:endDate as date) IS NULL OR r.endDate <= :endDate)
+            AND (:reservationStatusList IS NULL OR r.reservationStatus IN :reservationStatusList)
             """)
-    Page<Reservation> findReservationsByUserAndReservationStatus(Long userId, ReservationStatus reservationStatus, Pageable pageable);
+    Page<Reservation> findReservationsByUserAndReservationStatus(Long userId, LocalDate startDate, LocalDate endDate, List<ReservationStatus> reservationStatusList, Pageable pageable);
 }

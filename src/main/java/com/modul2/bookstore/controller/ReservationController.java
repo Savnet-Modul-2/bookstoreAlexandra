@@ -1,6 +1,7 @@
 package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.ReservationDTO;
+import com.modul2.bookstore.dto.ReservationsSearchDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.Reservation;
 import com.modul2.bookstore.entities.ReservationStatus;
@@ -57,10 +58,10 @@ public class ReservationController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserReservationsByStatus(@PathVariable(name = "userId") Long userId,
-                                                         @RequestParam(name = "status") ReservationStatus status,
                                                          @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
-        Page<Reservation> reservationPage = reservationService.getUserReservationsByStatus(userId, status, pageNumber, pageSize);
+                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                         @RequestBody ReservationsSearchDTO reservationsSearchDTO){
+        Page<Reservation> reservationPage = reservationService.getUserReservationsByStatus(userId, pageNumber, pageSize, reservationsSearchDTO);
         return ResponseEntity.ok(reservationPage.map(ReservationMapper::reservation2ReservationDTO));
     }
 
