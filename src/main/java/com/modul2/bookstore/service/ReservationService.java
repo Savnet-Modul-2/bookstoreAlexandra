@@ -1,6 +1,8 @@
 package com.modul2.bookstore.service;
 
+import com.modul2.bookstore.dto.ReservationsSearchDTO;
 import com.modul2.bookstore.entities.*;
+import com.modul2.bookstore.exceptions.MissingArgumentException;
 import com.modul2.bookstore.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,13 +120,16 @@ public class ReservationService {
         return reservations;
     }
 
-    public Page<Reservation> getLibraryReservationsByStartDateAndEndDate(Long libraryId, LocalDate startDate, LocalDate endDate, Integer pageNumber, Integer pageSize) {
+    public Page<Reservation> getLibraryReservationsByStartDateAndEndDate(Long libraryId, Integer pageNumber, Integer pageSize, ReservationsSearchDTO reservationsSearchDTO) throws MissingArgumentException {
+        if(reservationsSearchDTO.getStartDate() == null || reservationsSearchDTO.getEndDate() == null){
+            throw new MissingArgumentException("Start date or end date is missing");
+        }
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "startDate"));
-        return reservationRepository.findReservationsByStartDateAndEndDate(libraryId, startDate, endDate, pageable);
+        return reservationRepository.findReservationsByStartDateAndEndDate(libraryId, reservationsSearchDTO.getStartDate(), reservationsSearchDTO.getEndDate(), reservationsSearchDTO.getReservationStatusList(), pageable);
     }
 
-    public Page<Reservation> getUserReservationsByStatus(Long userId, ReservationStatus status, Integer pageNumber, Integer pageSize) {
+    public Page<Reservation> getUserReservationsByStatus(Long userId, Integer pageNumber, Integer pageSize, ReservationsSearchDTO reservationsSearchDTO) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "startDate"));
-        return reservationRepository.findReservationsByUserAndReservationStatus(userId, status, pageable);
+        return reservationRepository.findReservationsByUserAndReservationStatus(userId, reservationsSearchDTO.getStartDate(), reservationsSearchDTO.getEndDate(), reservationsSearchDTO.getReservationStatusList(), pageable);
     }
 }

@@ -51,6 +51,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, BAD_REQUEST);
     }
 
+    @ExceptionHandler(MissingArgumentException.class)
+    public ResponseEntity<?> handleMissingArgumentException(MissingArgumentException ex) {
+        ErrorDetail error = new ErrorDetail(ex.getMessage());
+        return new ResponseEntity<>(error, BAD_REQUEST);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();

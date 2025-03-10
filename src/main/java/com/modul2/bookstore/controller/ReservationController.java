@@ -1,9 +1,11 @@
 package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.ReservationDTO;
+import com.modul2.bookstore.dto.ReservationsSearchDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.Reservation;
 import com.modul2.bookstore.entities.ReservationStatus;
+import com.modul2.bookstore.exceptions.MissingArgumentException;
 import com.modul2.bookstore.mapper.ReservationMapper;
 import com.modul2.bookstore.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,21 +48,20 @@ public class ReservationController {
 
     @GetMapping("/library/{libraryId}")
     public ResponseEntity<?> getLibraryReservationsByStartDateAndEndDate(@PathVariable(name = "libraryId") Long libraryId,
-                                                                         @RequestParam(name = "startDate") LocalDate startDate,
-                                                                         @RequestParam(name = "endDate") LocalDate endDate,
                                                                          @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-                                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        Page<Reservation> reservationPage = reservationService.getLibraryReservationsByStartDateAndEndDate(libraryId, startDate, endDate, pageNumber, pageSize);
+                                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                                         @RequestBody ReservationsSearchDTO reservationsSearchDTO) throws MissingArgumentException {
+        Page<Reservation> reservationPage = reservationService.getLibraryReservationsByStartDateAndEndDate(libraryId, pageNumber, pageSize, reservationsSearchDTO);
         return ResponseEntity.ok(reservationPage.map(ReservationMapper::reservation2ReservationDTO));
     }
 
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserReservationsByStatus(@PathVariable(name = "userId") Long userId,
-                                                         @RequestParam(name = "status") ReservationStatus status,
                                                          @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
-        Page<Reservation> reservationPage = reservationService.getUserReservationsByStatus(userId, status, pageNumber, pageSize);
+                                                         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                         @RequestBody ReservationsSearchDTO reservationsSearchDTO){
+        Page<Reservation> reservationPage = reservationService.getUserReservationsByStatus(userId, pageNumber, pageSize, reservationsSearchDTO);
         return ResponseEntity.ok(reservationPage.map(ReservationMapper::reservation2ReservationDTO));
     }
 
