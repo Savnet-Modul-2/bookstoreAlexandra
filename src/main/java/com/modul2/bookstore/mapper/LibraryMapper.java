@@ -3,8 +3,6 @@ package com.modul2.bookstore.mapper;
 import com.modul2.bookstore.dto.LibraryDTO;
 import com.modul2.bookstore.entities.Library;
 
-import java.util.ArrayList;
-
 public class LibraryMapper {
     public static Library libraryDto2Library(LibraryDTO libraryDTO) {
         Library library = new Library();

@@ -1,7 +1,6 @@
 package com.modul2.bookstore.dto;
 
 import com.modul2.bookstore.entities.BookCategory;
-import com.modul2.bookstore.entities.Library;
 
 import java.time.LocalDateTime;
 

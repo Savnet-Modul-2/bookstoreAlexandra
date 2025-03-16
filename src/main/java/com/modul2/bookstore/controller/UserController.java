@@ -1,6 +1,8 @@
 package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.UserDTO;
+import com.modul2.bookstore.dto.validation.BasicValidation;
+import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
 import com.modul2.bookstore.exceptions.InvalidPasswordException;
@@ -9,6 +11,7 @@ import com.modul2.bookstore.repository.UserRepository;
 import com.modul2.bookstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +27,7 @@ public class UserController {
     UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> create(@Validated(BasicValidation.class) @RequestBody UserDTO userDTO) {
         User userToCreate = UserMapper.userDTO2User(userDTO);
         User createdUser = userService.create(userToCreate);
         return ResponseEntity.ok(UserMapper.user2UserDTO(createdUser));

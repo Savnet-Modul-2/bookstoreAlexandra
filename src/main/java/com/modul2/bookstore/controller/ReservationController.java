@@ -4,7 +4,6 @@ import com.modul2.bookstore.dto.ReservationDTO;
 import com.modul2.bookstore.dto.ReservationsSearchDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.Reservation;
-import com.modul2.bookstore.entities.ReservationStatus;
 import com.modul2.bookstore.exceptions.MissingArgumentException;
 import com.modul2.bookstore.mapper.ReservationMapper;
 import com.modul2.bookstore.service.ReservationService;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class ReservationController {
     public ResponseEntity<?> getLibraryReservationsByStartDateAndEndDate(@PathVariable(name = "libraryId") Long libraryId,
                                                                          @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
                                                                          @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                                         @RequestBody ReservationsSearchDTO reservationsSearchDTO) throws MissingArgumentException {
+                                                                         @Validated(ValidationOrder.class) @RequestBody ReservationsSearchDTO reservationsSearchDTO) throws MissingArgumentException {
         Page<Reservation> reservationPage = reservationService.getLibraryReservationsByStartDateAndEndDate(libraryId, pageNumber, pageSize, reservationsSearchDTO);
         return ResponseEntity.ok(reservationPage.map(ReservationMapper::reservation2ReservationDTO));
     }
@@ -60,7 +58,7 @@ public class ReservationController {
     public ResponseEntity<?> getUserReservationsByStatus(@PathVariable(name = "userId") Long userId,
                                                          @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
                                                          @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                         @RequestBody ReservationsSearchDTO reservationsSearchDTO){
+                                                         @Validated(ValidationOrder.class) @RequestBody ReservationsSearchDTO reservationsSearchDTO){
         Page<Reservation> reservationPage = reservationService.getUserReservationsByStatus(userId, pageNumber, pageSize, reservationsSearchDTO);
         return ResponseEntity.ok(reservationPage.map(ReservationMapper::reservation2ReservationDTO));
     }

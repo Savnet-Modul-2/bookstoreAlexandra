@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Constraint(validatedBy = { DateOrderValidator.class})
+@Constraint(validatedBy = {DateOrderValidator.class})
 @Target(ElementType.TYPE)
 @Retention(RUNTIME)
 public @interface ValidDateOrder {

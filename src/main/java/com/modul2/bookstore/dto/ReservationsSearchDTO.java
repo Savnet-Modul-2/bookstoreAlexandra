@@ -1,12 +1,20 @@
 package com.modul2.bookstore.dto;
 
+import com.modul2.bookstore.dto.validation.AdvancedValidation;
+import com.modul2.bookstore.dto.validation.BasicValidation;
+import com.modul2.bookstore.dto.validation.DateNotInThePast;
+import com.modul2.bookstore.dto.validation.ValidDateOrder;
 import com.modul2.bookstore.entities.ReservationStatus;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@ValidDateOrder(groups = AdvancedValidation.class)
 public class ReservationsSearchDTO {
+    @NotNull(groups = BasicValidation.class)
     private LocalDate startDate;
+    @NotNull(groups = BasicValidation.class)
     private LocalDate endDate;
     private List<ReservationStatus> reservationStatusList;
 

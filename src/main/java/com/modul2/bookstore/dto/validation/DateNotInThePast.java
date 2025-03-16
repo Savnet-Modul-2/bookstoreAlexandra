@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Constraint(validatedBy = { DateNotInThePastValidator.class})
+@Constraint(validatedBy = {DateNotInThePastValidator.class})
 @Target(ElementType.FIELD)
 @Retention(RUNTIME)
 public @interface DateNotInThePast {
