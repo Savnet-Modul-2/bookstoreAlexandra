@@ -32,7 +32,8 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+    public ResponseEntity<?> findAll(@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
+                                     @RequestParam(name = "pageSize", required = false) Integer pageSize) {
         if (pageSize != null && pageNumber != null) {
             Page<Book> bookPage = bookService.findAll(PageRequest.of(pageNumber, pageSize));
             return ResponseEntity.ok(bookPage.map(BookMapper::book2BookDto));
@@ -44,7 +45,10 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam(name = "bookAuthor", required = false) String bookAuthor, @RequestParam(name = "bookTitle", required = false) String bookTitle, @RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+    public ResponseEntity<?> search(@RequestParam(name = "bookAuthor", required = false) String bookAuthor,
+                                    @RequestParam(name = "bookTitle", required = false) String bookTitle,
+                                    @RequestParam(name = "pageNumber", required = false) Integer pageNumber,
+                                    @RequestParam(name = "pageSize", required = false) Integer pageSize) {
         if (pageSize != null && pageNumber != null) {
             Page<Book> bookPage = bookService.search(PageRequest.of(pageNumber, pageSize));
             return ResponseEntity.ok(bookPage.map(BookMapper::book2BookDto));

@@ -41,7 +41,6 @@ public class ExemplaryService {
         }
 
         bookRepository.save(book);
-
         return createdExemplaries;
     }
 
@@ -64,7 +63,6 @@ public class ExemplaryService {
 
         exemplary.setPublisher(exemplaryEntity.getPublisher());
         exemplary.setMaxBorrowDays(exemplaryEntity.getMaxBorrowDays());
-
         return exemplaryRepository.save(exemplary);
     }
 

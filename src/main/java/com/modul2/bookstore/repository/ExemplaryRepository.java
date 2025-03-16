@@ -22,5 +22,4 @@ public interface ExemplaryRepository extends JpaRepository<Exemplary, Long> {
             LIMIT 1
             """, nativeQuery = true)
     Optional<Exemplary> findAvailableExemplary(Long bookId, LocalDate startDate, LocalDate endDate);
-
 }

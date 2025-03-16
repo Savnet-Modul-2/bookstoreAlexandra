@@ -28,5 +28,4 @@ public class ExemplaryDTO {
     public void setMaxBorrowDays(Integer maxBorrowDays) {
         this.maxBorrowDays = maxBorrowDays;
     }
-
 }

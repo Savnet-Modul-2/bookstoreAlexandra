@@ -4,7 +4,6 @@ import com.modul2.bookstore.dto.ReservationDTO;
 import com.modul2.bookstore.dto.ReservationsSearchDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.Reservation;
-import com.modul2.bookstore.entities.ReservationStatus;
 import com.modul2.bookstore.exceptions.MissingArgumentException;
 import com.modul2.bookstore.mapper.ReservationMapper;
 import com.modul2.bookstore.service.ReservationService;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

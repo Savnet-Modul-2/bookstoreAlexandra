@@ -1,7 +1,5 @@
 package com.modul2.bookstore.dto;
 
-import java.util.List;
-
 public class LibraryDTO {
     private Long id;
     private String name;

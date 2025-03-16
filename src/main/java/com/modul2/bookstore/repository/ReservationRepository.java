@@ -3,7 +3,6 @@ package com.modul2.bookstore.repository;
 import com.modul2.bookstore.entities.Reservation;
 import com.modul2.bookstore.entities.ReservationStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -121,7 +121,7 @@ public class ReservationService {
     }
 
     public Page<Reservation> getLibraryReservationsByStartDateAndEndDate(Long libraryId, Integer pageNumber, Integer pageSize, ReservationsSearchDTO reservationsSearchDTO) throws MissingArgumentException {
-        if(reservationsSearchDTO.getStartDate() == null || reservationsSearchDTO.getEndDate() == null){
+        if (reservationsSearchDTO.getStartDate() == null || reservationsSearchDTO.getEndDate() == null) {
             throw new MissingArgumentException("Start date or end date is missing");
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "startDate"));

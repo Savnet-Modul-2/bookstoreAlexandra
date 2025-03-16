@@ -35,7 +35,8 @@ public class ExemplaryController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+    public ResponseEntity<?> findAll(@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
+                                     @RequestParam(name = "pageSize", required = false) Integer pageSize) {
         if (pageSize != null && pageNumber != null) {
             Page<Exemplary> exemplaryPage = exemplaryService.findAll(PageRequest.of(pageNumber, pageSize));
             return ResponseEntity.ok(exemplaryPage.map(ExemplaryMapper::exemplary2ExemplaryDto));
@@ -58,5 +59,4 @@ public class ExemplaryController {
         exemplaryService.deleteById(exemplaryId);
         return ResponseEntity.noContent().build();
     }
-
 }
