@@ -18,6 +18,7 @@ public class ReservationDTO {
     @NotNull(groups = BasicValidation.class)
     private LocalDate endDate;
     private ReservationStatus reservationStatus;
+    private Integer version;
     private UserDTO user;
     private ExemplaryDTO exemplary;
 
@@ -67,5 +68,13 @@ public class ReservationDTO {
 
     public void setExemplary(ExemplaryDTO exemplary) {
         this.exemplary = exemplary;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

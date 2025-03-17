@@ -9,6 +9,7 @@ public class ExemplaryMapper {
         Exemplary exemplary = new Exemplary();
         exemplary.setPublisher(exemplaryDTO.getPublisher());
         exemplary.setMaxBorrowDays(exemplaryDTO.getMaxBorrowDays());
+        exemplary.setVersion(exemplaryDTO.getVersion());
         return exemplary;
     }
 
@@ -17,6 +18,7 @@ public class ExemplaryMapper {
         exemplaryDTO.setId(exemplary.getId());
         exemplaryDTO.setPublisher(exemplary.getPublisher());
         exemplaryDTO.setMaxBorrowDays(exemplary.getMaxBorrowDays());
+        exemplaryDTO.setVersion(exemplary.getVersion());
         return exemplaryDTO;
     }
 
@@ -24,6 +26,7 @@ public class ExemplaryMapper {
         Exemplary exemplary = new Exemplary();
         exemplary.setPublisher(dto.getPublisher());
         exemplary.setMaxBorrowDays(dto.getMaxBorrowDays());
+        exemplary.setVersion(exemplary.getVersion());
         return exemplary;
     }
 }

@@ -15,6 +15,7 @@ public class ReservationMapper {
         if (reservationDTO.getExemplary() != null) {
             reservation.setExemplary(ExemplaryMapper.exemplaryDto2Exemplary(reservationDTO.getExemplary()));
         }
+        reservation.setVersion(reservationDTO.getVersion());
         return reservation;
     }
 
@@ -30,6 +31,7 @@ public class ReservationMapper {
         if (reservation.getExemplary() != null) {
             reservationDTO.setExemplary(ExemplaryMapper.exemplary2ExemplaryDto(reservation.getExemplary()));
         }
+        reservationDTO.setVersion(reservation.getVersion());
         return reservationDTO;
     }
 }

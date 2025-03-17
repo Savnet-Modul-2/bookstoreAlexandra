@@ -1,8 +1,11 @@
 package com.modul2.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "reservation")
 @Table(name = "RESERVATION", schema = "public")
@@ -28,6 +31,15 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "exemplary_id")
     private Exemplary exemplary;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
+
+    @Column(name = "update_time")
+//    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalDateTime updateTime;
 
     public Long getId() {
         return id;
@@ -75,5 +87,21 @@ public class Reservation {
 
     public void setExemplary(Exemplary exemplary) {
         this.exemplary = exemplary;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }

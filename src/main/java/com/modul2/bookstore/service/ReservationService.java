@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class ReservationService {
     @Autowired
     private EmailService emailService;
 
+    //@Transactional - face rollback la primul save de exemplary, daca se arunca o exceptie in cadrul metodei
     public Reservation reserveBook(Long userId, Long bookId, Reservation reservation) {
         User user = userRepository.findById(userId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -49,13 +51,16 @@ public class ReservationService {
             throw new UnsupportedOperationException("Reservation too long, must be maximum " + availableExemplary.getMaxBorrowDays() + " days");
         }
 
+        availableExemplary.setUpdateTime(LocalDateTime.now());
+
         Reservation newReservation = new Reservation();
         newReservation.setStartDate(reservation.getStartDate());
         newReservation.setEndDate(reservation.getEndDate());
         newReservation.setReservationStatus(ReservationStatus.PENDING);
-
-        user.addReservation(newReservation);
-        availableExemplary.addReservation(newReservation);
+        //aici pun debug
+        exemplaryRepository.save(availableExemplary);
+//        user.addReservation(newReservation);
+//        availableExemplary.addReservation(newReservation);
 
         return reservationRepository.save(newReservation);
     }

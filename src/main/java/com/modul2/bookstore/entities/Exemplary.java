@@ -1,7 +1,10 @@
 package com.modul2.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,15 @@ public class Exemplary {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
+
+    @Column(name = "update_time")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalDateTime updateTime;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
             fetch = FetchType.LAZY,
@@ -72,5 +84,21 @@ public class Exemplary {
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
         reservation.setExemplary(this);
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }

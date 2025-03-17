@@ -5,6 +5,7 @@ public class CreateExemplaryDTO {
     private Integer nrOfExemplaries;
     private String publisher;
     private Integer maxBorrowDays;
+    private Integer version;
 
     public Long getBookId() {
         return bookId;
@@ -36,5 +37,13 @@ public class CreateExemplaryDTO {
 
     public void setMaxBorrowDays(Integer maxBorrowDays) {
         this.maxBorrowDays = maxBorrowDays;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
