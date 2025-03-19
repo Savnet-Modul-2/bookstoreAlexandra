@@ -53,16 +53,13 @@ public class ReservationService {
 
         availableExemplary.setUpdateTime(LocalDateTime.now());
 
-        Reservation newReservation = new Reservation();
-        newReservation.setStartDate(reservation.getStartDate());
-        newReservation.setEndDate(reservation.getEndDate());
-        newReservation.setReservationStatus(ReservationStatus.PENDING);
+        user.addReservation(reservation);
+        availableExemplary.addReservation(reservation);
+        reservation.setReservationStatus(ReservationStatus.PENDING);
         //aici pun debug
-        exemplaryRepository.save(availableExemplary);
-//        user.addReservation(newReservation);
-//        availableExemplary.addReservation(newReservation);
+//        exemplaryRepository.save(availableExemplary);
 
-        return reservationRepository.save(newReservation);
+        return reservationRepository.save(reservation);
     }
 
     public Reservation getById(Long reservationId) {
