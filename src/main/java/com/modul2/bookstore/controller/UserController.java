@@ -2,7 +2,6 @@ package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.UserDTO;
 import com.modul2.bookstore.dto.validation.BasicValidation;
-import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
 import com.modul2.bookstore.exceptions.InvalidPasswordException;
@@ -31,6 +30,12 @@ public class UserController {
         User userToCreate = UserMapper.userDTO2User(userDTO);
         User createdUser = userService.create(userToCreate);
         return ResponseEntity.ok(UserMapper.user2UserDTO(createdUser));
+    }
+
+    @PostMapping("/resend-verification")
+    public ResponseEntity<?> resendVerificationCode(@RequestParam("email") String email) {
+        User user = userService.resendVerificationCode(email);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{userId}")

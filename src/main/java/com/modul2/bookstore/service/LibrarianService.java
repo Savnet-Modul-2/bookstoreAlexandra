@@ -30,11 +30,33 @@ public class LibrarianService {
                 .md5Hex(librarian.getPassword()).toUpperCase();
         librarian.setPassword(encryptedPassword);
 
-        librarian.setVerificationCode(String.valueOf(new Random().nextInt(10000, 99999)));
+        String verificationCode = generateVerificationCode();
+        librarian.setVerificationCode(verificationCode);
         librarian.setVerificationCodeTimeExpiration(LocalDateTime.now().plusMinutes(5));
 
         emailService.sendEmailVerification(librarian.getEmail(), librarian.getVerificationCode());
         return librarianRepository.save(librarian);
+    }
+
+    public Librarian resendVerificationCode(String email) {
+        Librarian librarian = librarianRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Librarian not found"));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expirationTime = librarian.getVerificationCodeTimeExpiration();
+
+        if (now.isAfter(expirationTime.minusMinutes(1))) {
+            String newCode = generateVerificationCode();
+            librarian.setVerificationCode(newCode);
+            librarian.setVerificationCodeTimeExpiration(now.plusMinutes(5));
+        }
+
+        emailService.sendEmailVerification(librarian.getEmail(), librarian.getVerificationCode());
+        return librarianRepository.save(librarian);
+    }
+
+    private String generateVerificationCode() {
+        return String.valueOf(new Random().nextInt(10000, 99999));
     }
 
     public Librarian getById(Long librarianId) {

@@ -27,6 +27,12 @@ public class LibrarianController {
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(createdLibrarian));
     }
 
+    @PostMapping("/resend-verification")
+    public ResponseEntity<?> resendVerificationCode(@RequestParam("email") String email) {
+        Librarian librarian = librarianService.resendVerificationCode(email);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{librarianId}")
     public ResponseEntity<?> getById(@PathVariable(name = "librarianId") Long librarianIdToSearchFor) {
         Librarian foundLibrarian = librarianService.getById(librarianIdToSearchFor);
