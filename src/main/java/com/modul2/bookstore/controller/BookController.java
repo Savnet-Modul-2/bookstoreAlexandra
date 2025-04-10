@@ -1,8 +1,11 @@
 package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.BookDTO;
+import com.modul2.bookstore.dto.ReviewDTO;
 import com.modul2.bookstore.entities.Book;
+import com.modul2.bookstore.entities.Review;
 import com.modul2.bookstore.mapper.BookMapper;
+import com.modul2.bookstore.mapper.ReviewMapper;
 import com.modul2.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,5 +73,26 @@ public class BookController {
     public ResponseEntity<?> deleteById(@PathVariable(name = "bookId") Long bookIdToDelete) {
         bookService.deleteById(bookIdToDelete);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{userId}/add-review/{bookId}")
+    public ResponseEntity<?> addReviewToBook(@PathVariable Long userId, @PathVariable Long bookId, @RequestBody ReviewDTO reviewDTO) {
+        Review review = ReviewMapper.reviewDto2Review(reviewDTO);
+        Book book = bookService.addReviewToBook(userId, bookId, review);
+        return ResponseEntity.ok(BookMapper.book2BookDto(book));
+    }
+
+    @GetMapping("/fav/{userId}")
+    public ResponseEntity<?> findAllFav(@PathVariable Long userId,
+                                        @RequestParam(name = "pageNumber", required = false) Integer pageNumber,
+                                        @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+        if (pageSize != null && pageNumber != null) {
+            Page<Book> bookPage = bookService.findAllFav(userId, PageRequest.of(pageNumber, pageSize));
+            return ResponseEntity.ok(bookPage.map(BookMapper::book2BookDto));
+        }
+        List<Book> books = bookService.findAll();
+        return ResponseEntity.ok(books.stream()
+                .map(BookMapper::book2BookDto)
+                .toList());
     }
 }

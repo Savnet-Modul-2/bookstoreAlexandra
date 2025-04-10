@@ -15,6 +15,7 @@ public class BookMapper {
         if (bookDTO.getLibrary() != null) {
             book.setLibrary(LibraryMapper.libraryDto2Library(bookDTO.getLibrary()));
         }
+        book.setMedieReviews(bookDTO.getMedieReviews());
         return book;
     }
 
@@ -30,6 +31,7 @@ public class BookMapper {
         if (book.getLibrary() != null) {
             bookDTO.setLibrary(LibraryMapper.library2LibraryDto(book.getLibrary()));
         }
+        bookDTO.setMedieReviews(book.getMedieReviews());
         return bookDTO;
     }
 }

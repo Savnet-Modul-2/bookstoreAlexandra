@@ -1,8 +1,10 @@
 package com.modul2.bookstore.service;
 
+import com.modul2.bookstore.entities.Book;
 import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
 import com.modul2.bookstore.exceptions.InvalidPasswordException;
+import com.modul2.bookstore.repository.BookRepository;
 import com.modul2.bookstore.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +23,9 @@ public class UserService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     public User create(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
@@ -118,6 +123,28 @@ public class UserService {
             throw new InvalidPasswordException("Invalid password.");
         }
 
+        return userRepository.save(user);
+    }
+
+    public User addBookToFav(long userId, Long bookId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        user.addBook(book);
+        return userRepository.save(user);
+    }
+
+    public User removeBookToFav(long userId, Long bookId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        user.removeBook(book);
         return userRepository.save(user);
     }
 }
