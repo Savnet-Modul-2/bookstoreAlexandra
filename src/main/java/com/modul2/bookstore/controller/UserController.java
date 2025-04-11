@@ -77,4 +77,16 @@ public class UserController {
         User loggedUser = userService.login(userToLogin.getEmail(), userToLogin.getPassword());
         return ResponseEntity.ok(loggedUser.getId());
     }
+
+    @PutMapping("{userId}/add-book/{bookId}")
+    public ResponseEntity<?> addBookToFav(@PathVariable Long userId, @PathVariable Long bookId) {
+        User updatedUser = userService.addBookToFav(userId, bookId);
+        return ResponseEntity.ok(UserMapper.user2UserDTO(updatedUser));
+    }
+
+    @PutMapping("{userId}/remove-book/{bookId}")
+    public ResponseEntity<?> removeBookToFav(@PathVariable Long userId, @PathVariable Long bookId) {
+        User updatedUser = userService.removeBookToFav(userId, bookId);
+        return ResponseEntity.ok(UserMapper.user2UserDTO(updatedUser));
+    }
 }

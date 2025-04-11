@@ -32,6 +32,9 @@ public class Book {
     @Column(name = "LANGUAGE")
     private String language;
 
+    @Column(name = "MEDIE_REVIEWS")
+    private double medieReviews;
+
     @ManyToOne
     @JoinColumn(name = "library_id")
     private Library library;
@@ -41,6 +44,15 @@ public class Book {
             orphanRemoval = true,
             mappedBy = "book")
     private List<Exemplary> exemplaries = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "book")
+    private List<Review> reviews = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
+    private List<User> users;
 
     public Long getId() {
         return id;
@@ -121,5 +133,51 @@ public class Book {
     public void addExemplary(Exemplary exemplary) {
         this.exemplaries.add(exemplary);
         exemplary.setBook(this);
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+        review.setBook(this);
+    }
+
+    public void removeReview(Review review) {
+        reviews.remove(review);
+        review.setBook(null);
+    }
+
+    public double getMedieReviews() {
+        return medieReviews;
+    }
+
+    public void setMedieReviews(double medieReviews) {
+        this.medieReviews = medieReviews;
+    }
+
+    public void calculMedie() {
+        double suma = 0.0;
+        for (Review review : reviews) {
+            suma += review.getNota();
+        }
+        medieReviews = suma / reviews.size();
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void addUser(User user) {
+        users.add(user);
     }
 }

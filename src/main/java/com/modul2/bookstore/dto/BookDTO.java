@@ -13,6 +13,7 @@ public class BookDTO {
     private BookCategory bookCategory;
     private String language;
     private LibraryDTO library;
+    private double medieReviews;
 
     public Long getId() {
         return id;
@@ -76,5 +77,13 @@ public class BookDTO {
 
     public void setLibrary(LibraryDTO library) {
         this.library = library;
+    }
+
+    public double getMedieReviews() {
+        return medieReviews;
+    }
+
+    public void setMedieReviews(double medieReviews) {
+        this.medieReviews = medieReviews;
     }
 }
